@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<head>
+  <title> Arduino DHT11 Server </title>
+</head>
+<html>
+<!----------------------------CSS-------------------------------->
+<style>
+  body
+  {
+    font-family: monaco, Consolas;
+    background-color: rgba(243, 240, 57, 0.904);
+    color: blue;
+  }
+</style>
+<!----------------------------HTML------------------------------->
+<body>
+  <center><h1>DHT11 Sensor</h1></center>
+  <center>
+    <h2>
+      <span style="color:rgb(196, 3, 3)" id="DHT11Vals">N/A</span>
+    </h2>
+  </center>
+<!-------------------------JavaScript---------------------------->
+<script>
+  setInterval(function()
+  {
+    getDHT11Vals();
+  }, 2000);
+  <!------------------------------------------------------------->
+  function getDHT11Vals()
+  {
+    var DHT11Request = new XMLHttpRequest();
+    DHT11Request.onreadystatechange = function()
+    {
+      if(this.readyState == 4 && this.status == 200 && this.responseText != null)
+      {
+        document.getElementById("DHT11Vals").innerHTML = this.responseText;
+      }
+    };
+    DHT11Request.open("GET", "readDHT11", true);
+    DHT11Request.send();
+  }
+</script>
+</body>
+</html>

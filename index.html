@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="cs">
+    <style>
+        html {margin: 0; padding: 0; font-family: "Roboto", sans-serif; color: white}
+        main {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;
+            background-color: #8BC6EC;
+            background-image: linear-gradient(135deg, #8BC6EC 0%, #9599E2 100%);
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh;
+            width: 100vw;
+        }
+        .text {position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;}
+        span {font-size: 80px; line-height: 1rem;}
+        h1 {font-size: 60px;}
+        h2 {font-size: 50px;}
+    </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <title>Watcher</title>
+    <link rel="icon" type="image/x-icon" href="./eye.png">
+</head>
+    <main>
+        <div class="text">
+            <h1>Aktuální počet lidí v objektu:</h1>
+            <span id="NumOfPeople">N/A</span>
+            <h2 id="time"></h2>
+            <div id="resetButton" style="display: none;">
+                <button onlick="resetCounter()">Reset</button>
+            </div>
+            <script>
+                function updateTime(){
+                    const now = new Date();
+                    const currentTime = now.toLocaleString();
+
+                    document.querySelector('#time').textContent = currentTime;
+                }
+
+                function getNumOfPeople(){
+                    var INOrequest = new XMLHttpRequest();
+                    INOrequest.onreadystatechange = function(){
+                        if(this.readyState == 4 && this.status && this.responseText != null){
+                            document.getElementById("NumOfPeople").innerHTML = this.responseText;
+                        }
+                    };
+                    INOrequest.open("GET", "readCount", true);
+                    INOrequest.send();
+                }
+                
+                function resetCounter(){
+                    //TODO
+                }
+
+                window.onload = function() {
+                    if(window.location.href.indexOf("/reset") > -1) {
+                        document.getElementById("resetButton").style.display = "block";
+                    }
+                }
+
+                setInterval(updateTime, 1000);
+                setInterval(getNumOfPeople, 1000);
+            </script>
+        </div>
+    </main>
+</html>
